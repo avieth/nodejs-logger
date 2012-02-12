@@ -1,0 +1,71 @@
+A logger for Nodejs applications.
+
+This is a logger library with an emphasis on flexibility.
+
+Features:
+ - Transparent to the way in which logs are written and stored.
+ - Log sinks filter by log level, and can be added and removed dynamically.
+ - Log level identifiers can be defined and undefined dynamically.
+
+Usage:
+ 
+ The only export of this library is a logger object. One of these objects should
+ be created at the initialization of the application, and it should be passed
+ around as a parameter to any function that may need to log data. 
+ 
+ When data is to be logged, the logger.log function is called with message and
+ log level parameters. The logger will send the message to the proper sinks, 
+ and those sinks will write the data via user-supplied write functions.
+ 
+ See example.js for examples of usage.
+
+The logger object makes public these functions:
+
+  log(level, message)
+    Log message at level. 
+    Both parameters should be strings.
+  
+  addSink(id, writer, hearLevels, logId)
+    Add a sink.
+    id should be a string, hearLevels an array of strings, logId a boolean.
+    writer should be a function that takes an object with properties
+      id, logId, date, message, level
+
+  removeSink(id)
+    Remove the sink with id. 
+    id should be a string.
+
+  ignoreLevels(id, levels)
+    Tell the sink with id to ignore these levels.
+    id should be a string.
+    levels should be a string or an array of strings.
+
+  hearLevels(id, levels)
+    Tell the sink with id to hear these levels.
+    id should be a string.
+    levels should be a string or an array of strings.
+
+  defineLevels(levels)
+    Define the log levels given in levels.
+    levels should be an array of strings.
+
+  undefineLevels(levels) 
+    Undefine the log levels given in levels.
+    levels should be an array of strings.
+
+  setLogId(id, logId)
+    Set the logId value for the sink with id.
+    id should be a string, logId a boolean.
+
+  getLogId(id)
+    Return the current logId value for the sink with id.
+    id should be a string.
+
+  setWriter(id, write)
+    Set the writer function for the sink with id.
+    id should be a string.
+    write should be a function as detailed under addSink above.
+
+  getWriter(id)
+    Return the write function for the sink with id.
+
